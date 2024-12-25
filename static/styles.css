@@ -1,0 +1,17 @@
+h1 {
+    text-align: center;
+}
+
+#game-board {
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(5, 50px);
+    margin-top: 20px;
+    width: 200px;
+    height: 200px;
+}
+
+.cell {
+    width: 40px;
+    padding: 10px;
+}
