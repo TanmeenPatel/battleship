@@ -1,5 +1,6 @@
 console.log('hi')
 msg = document.getElementById('message')
+const gameBoard = document.getElementById('game-board')
 
 document.getElementById('start-game').addEventListener("click", () => {
     fetch('/start-game', { method: 'POST' })
@@ -9,10 +10,16 @@ document.getElementById('start-game').addEventListener("click", () => {
             createboard()
             console.log(data.board)
         });
+    document.getElementById('start-game').disabled = true;
+})
+
+document.getElementById('restart-game').addEventListener('click', () => {
+    document.getElementById('start-game').disabled = false;
+    gameBoard.innerHTML = ''
+    msg.innerText = ''
 })
 
 function createboard() {
-    const gameBoard = document.getElementById('game-board')
     gameBoard.innerHTML = ''
     for (let i = 0; i < 5; i++) {
         const rowDiv = document.createElement('div')
@@ -26,7 +33,14 @@ function createboard() {
                     body: JSON.stringify({x: i, y: j})})
                 .then(response => response.json())
                 .then(data => {
-                    msg.innerText = data.message + data.attempts
+                    if (!data.hit) {
+                        cellDiv.classList.add('miss')
+                    }
+                    else if (data.hit) {
+                        cellDiv.classList.add('hit')
+                        cellDiv.innerText = '🚢'
+                    }
+                    msg.innerText = data.message + data.attempts;
                 })
                 cellDiv.disabled = true
             })

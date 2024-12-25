@@ -53,18 +53,16 @@ def move():
     data = request.get_json()
     x = data.get('x')
     y = data.get('y')
-    print(x, y)
 
     ship = board[x][y]
     if not isinstance(ship, Ship):
-        return jsonify({'message': 'MISS!', 'attempts': attempts})
+        return jsonify({'message': 'MISS!', 'attempts': attempts, 'hit': False})
 
     if ship.has_sunk():
-        return jsonify({'message': 'MISS!', 'attempts': attempts})
+        return jsonify({'message': 'MISS!', 'attempts': attempts, 'hit': False})
     else:
         ship.got_hit()
-        print(f'You sank {ship.get_name()}!')
         if is_finished(board):
-            return jsonify({'message': 'GAME OVER! You sank the last ship. Congrats!'})
+            return jsonify({'message': 'GAME OVER! You sank the last ship. Congrats!', 'hit': True})
         else:
-            return jsonify({'message': f'You sank {ship.get_name()}!', 'attempts': attempts})
+            return jsonify({'message': f'You sank {ship.get_name()}!', 'attempts': attempts, 'hit': True})
